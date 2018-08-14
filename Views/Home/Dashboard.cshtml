@@ -1,0 +1,50 @@
+@model List<Wedding>
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container">
+        <div class="nav navbar-nav navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <label class="white">Welcome</label><a asp-area="" asp-controller="Home" asp-action="Dashboard">@ViewBag.user.FirstName</a>
+        </div>
+        <div class="navbar-collapse collapse">
+            <ul class="nav navbar-nav pull-right">
+                <li><a asp-area="" asp-controller="Home" asp-action="Index">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<table class="table table-striped table-hover">
+    <thead>
+        <tr>
+            <th>Wedding</th>
+            <th>Date</th>
+            <th>Guest</th>
+            <th>Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var wedding in @Model){
+            <tr>
+                <td><a href="ThisWedding/@wedding.Id">@wedding.WedderOne & @wedding.WedderTwo</a></td>
+                <td>@wedding.Date.ToString("D")</td>
+                <td>@wedding.Guests.Count</td>
+                @if(@wedding.Guests.SingleOrDefault(r => r.userid == ViewBag.User.Id) != null){
+                    <td><a href="UnRsvp/@wedding.Id">Un-RSVP</a></td>
+                }
+                else {
+                    <td><a href="Rsvp/@wedding.Id">Rsvp</a></td>
+                }
+                @if(wedding.creatorid == ViewBag.user.Id){
+                    <td><a href="">Delete</a></td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="Wedding">New Wedding</a>
